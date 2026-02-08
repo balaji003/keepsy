@@ -1,0 +1,26 @@
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node modules (for frontend future)
+node_modules/
+dist/
+out/
+build/
+
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Environment variables
+.env

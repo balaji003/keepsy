@@ -4,27 +4,29 @@ import { StatusBar } from 'expo-status-bar';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-export default function LoginScreen({ navigation }: any) {
+export default function SignUpScreen({ navigation }: any) {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = async () => {
-        if (!email || !password) {
-            Alert.alert('Error', 'Please enter both email and password');
+    const handleSignUp = async () => {
+        if (!name || !email || !password) {
+            Alert.alert('Error', 'Please fill in all fields');
             return;
         }
 
         setIsLoading(true);
         try {
             // Use local IP if testing on device, localhost for simulator/web
-            const response = await fetch('http://localhost:8080/auth/login', {
+            const response = await fetch('http://localhost:8080/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    identifier: email,
+                    name: name,
+                    email: email,
                     password: password,
                 }),
             });
@@ -32,13 +34,15 @@ export default function LoginScreen({ navigation }: any) {
             const data = await response.json();
 
             if (response.ok) {
-                console.log('Login successful:', data);
-                navigation.replace('Dashboard');
+                console.log('Signup successful:', data);
+                Alert.alert('Success', 'Account created! Please sign in.', [
+                    { text: 'OK', onPress: () => navigation.navigate('Login') }
+                ]);
             } else {
-                Alert.alert('Login Failed', data.message || 'Invalid credentials');
+                Alert.alert('Signup Failed', data.message || 'Could not create account');
             }
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Signup error:', error);
             Alert.alert('Error', 'Something went wrong. Please try again.');
         } finally {
             setIsLoading(false);
@@ -53,11 +57,18 @@ export default function LoginScreen({ navigation }: any) {
                 className="flex-1 justify-center px-6"
             >
                 <View className="items-center mb-10">
-                    <Text className="text-3xl font-bold text-white mb-2">Welcome Back</Text>
-                    <Text className="text-gray-400 text-base">Sign in to your account</Text>
+                    <Text className="text-3xl font-bold text-white mb-2">Create Account</Text>
+                    <Text className="text-gray-400 text-base">Sign up to get started</Text>
                 </View>
 
                 <View className="space-y-6">
+                    <Input
+                        label="Full Name"
+                        placeholder="John Doe"
+                        value={name}
+                        onChangeText={setName}
+                    />
+
                     <Input
                         label="Email"
                         placeholder="you@example.com"
@@ -75,22 +86,18 @@ export default function LoginScreen({ navigation }: any) {
                         secureTextEntry
                     />
 
-                    <TouchableOpacity className="items-end">
-                        <Text className="text-primary font-medium">Forgot Password?</Text>
-                    </TouchableOpacity>
-
                     <Button
-                        title={isLoading ? "Signing In..." : "Sign In"}
-                        onPress={handleLogin}
+                        title={isLoading ? "Creating Account..." : "Sign Up"}
+                        onPress={handleSignUp}
                         variant="primary"
                         disabled={isLoading}
                     />
                 </View>
 
                 <View className="flex-row justify-center mt-8">
-                    <Text className="text-gray-500">Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <Text className="text-primary font-bold">Sign Up</Text>
+                    <Text className="text-gray-500">Already have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text className="text-primary font-bold">Sign In</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>

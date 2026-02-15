@@ -47,11 +47,17 @@ CREATE TABLE IF NOT EXISTS keepsy_product_purchase_details (
 
 CREATE TABLE IF NOT EXISTS keepsy_bills (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL,
-    file_url TEXT NOT NULL,
-    ocr_text TEXT,
-    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES keepsy_products(id) ON DELETE CASCADE
+    user_id INT NOT NULL,
+    category_id INT, -- Optional: link to category
+    name VARCHAR(255) NOT NULL,
+    file_url VARCHAR(2048) NOT NULL,
+    file_type VARCHAR(50), -- pdf, image/jpeg, etc.
+    amount DECIMAL(10, 2), -- Optional: amount on the bill
+    due_date DATE,         -- Optional: due date
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES keepsy_users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES keepsy_categories(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS keepsy_reminders (

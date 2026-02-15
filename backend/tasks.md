@@ -65,3 +65,4 @@
 - [x] Update `Bills` service to store files in `<uuid>/bills/<filename>`.
 - [x] Update tests for `Auth` and `Bills` services.
 - [x] Rename all tables with `keepsy_` prefix.
+- [x] Consolidate all migrations into `000001_init_schema.up.sql`.

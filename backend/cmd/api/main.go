@@ -85,9 +85,24 @@ func main() {
 	mux.HandleFunc("GET /bills", billsHandler.ListBills)
 	mux.HandleFunc("GET /bills/download", billsHandler.DownloadBill)
 
+	// CORS Middleware
+	corsMiddleware := func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*") // For dev only
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+			if r.Method == "OPTIONS" {
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
+	}
+
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	log.Printf("Server starting on %s", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	if err := http.ListenAndServe(addr, corsMiddleware(mux)); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }

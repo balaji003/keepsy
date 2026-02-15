@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, KeyboardAvoidingView, Platform, TouchableOpacity, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -7,11 +7,42 @@ import Input from '../components/Input';
 export default function LoginScreen({ navigation }: any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = () => {
-        // TODO: Implement login logic
-        console.log('Login attempt:', email);
-        navigation.replace('Dashboard');
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert('Error', 'Please enter both email and password');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            // Use local IP if testing on device, localhost for simulator/web
+            const response = await fetch('http://localhost:8080/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    identifier: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Login successful:', data);
+                navigation.replace('Dashboard');
+            } else {
+                Alert.alert('Login Failed', data.message || 'Invalid credentials');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            Alert.alert('Error', 'Something went wrong. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -49,9 +80,10 @@ export default function LoginScreen({ navigation }: any) {
                     </TouchableOpacity>
 
                     <Button
-                        title="Sign In"
+                        title={isLoading ? "Signing In..." : "Sign In"}
                         onPress={handleLogin}
                         variant="primary"
+                        disabled={isLoading}
                     />
                 </View>
 

@@ -56,6 +56,8 @@ func (s *service) Register(ctx context.Context, req RegisterRequest) (*users.Use
 	return user, nil
 }
 
+var ErrUserNotFound = errors.New("user not found")
+
 func (s *service) Login(ctx context.Context, req LoginRequest) (*users.User, error) {
 	if req.Identifier == "" || req.Password == "" {
 		return nil, errors.New("identifier and password are required")
@@ -71,6 +73,10 @@ func (s *service) Login(ctx context.Context, req LoginRequest) (*users.User, err
 		// Try by Phone
 		user, err = s.userRepo.GetByPhone(ctx, req.Identifier)
 		if err != nil {
+			// If both fail, and it's because user wasn't found, return specific error
+			if err.Error() == "user not found" {
+				return nil, ErrUserNotFound
+			}
 			return nil, errors.New("invalid credentials")
 		}
 	}

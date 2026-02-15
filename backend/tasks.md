@@ -41,3 +41,8 @@
   - [x] Add `GetBillDownloadURL` to Bills Service with ownership check.
   - [x] Implement `GET /bills/download` endpoint with security checks.
 - [x] Verify with Unit Tests covering Success, Unauthorized, and Not Found cases.
+
+## Authentication Improvements (2026-02-15)
+- [x] Update `Login` service to return `ErrUserNotFound` when user is not found.
+- [x] Update `Login` handler to return 404 with specific error code `user_not_found`.
+- [x] Add Unit Test for `UserNotFound` scenario.

@@ -43,6 +43,14 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.service.Login(r.Context(), req)
 	if err != nil {
+		if err == ErrUserNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error":   "user_not_found",
+				"message": "User not found. Please sign up.",
+			})
+			return
+		}
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}

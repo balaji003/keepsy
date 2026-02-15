@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"keepsy-backend/internal/users"
 	"testing"
 
@@ -141,5 +142,22 @@ func TestLogin(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.Equal(t, "invalid credentials", err.Error())
+	})
+
+	t.Run("UserNotFound", func(t *testing.T) {
+		mockAuthRepo := new(MockAuthRepo)
+		mockUserRepo := new(MockUserRepo)
+		service := NewService(mockAuthRepo, mockUserRepo)
+
+		mockUserRepo.On("GetByEmail", mock.Anything, "unknown@example.com").Return(nil, errors.New("user not found"))
+		mockUserRepo.On("GetByPhone", mock.Anything, "unknown@example.com").Return(nil, errors.New("user not found"))
+
+		_, err := service.Login(context.Background(), LoginRequest{
+			Identifier: "unknown@example.com",
+			Password:   "password",
+		})
+
+		assert.Error(t, err)
+		assert.Equal(t, ErrUserNotFound, err)
 	})
 }

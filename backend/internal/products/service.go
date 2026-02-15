@@ -35,6 +35,7 @@ func (s *service) CreateProduct(ctx context.Context, req CreateProductRequest) (
 		Brand:           req.Brand,
 		Model:           req.Model,
 		Location:        req.Location,
+		Price:           req.Price,
 		PurchaseDate:    req.PurchaseDate,
 		WarrantyEndDate: req.WarrantyEndDate,
 		PurchaseDetails: req.PurchaseDetails,

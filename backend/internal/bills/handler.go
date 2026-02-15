@@ -41,30 +41,20 @@ func (h *Handler) UploadBill(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.FormValue("name")
-	if name == "" {
-		name = header.Filename // Default to filename if not provided
+	productIDStr := r.FormValue("product_id")
+	if productIDStr == "" {
+		http.Error(w, "product_id is required", http.StatusBadRequest)
+		return
 	}
-
-	var categoryID *int
-	if catStr := r.FormValue("category_id"); catStr != "" {
-		if id, err := strconv.Atoi(catStr); err == nil {
-			categoryID = &id
-		}
-	}
-
-	var amount *float64
-	if amtStr := r.FormValue("amount"); amtStr != "" {
-		if val, err := strconv.ParseFloat(amtStr, 64); err == nil {
-			amount = &val
-		}
+	productID, err := strconv.Atoi(productIDStr)
+	if err != nil {
+		http.Error(w, "Invalid product_id", http.StatusBadRequest)
+		return
 	}
 
 	req := CreateBillRequest{
-		UserID:     userID,
-		CategoryID: categoryID,
-		Name:       name,
-		Amount:     amount,
+		UserID:    userID,
+		ProductID: productID,
 	}
 
 	// 3. Call Service

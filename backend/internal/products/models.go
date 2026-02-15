@@ -13,6 +13,7 @@ type Product struct {
 	Brand           string           `json:"brand,omitempty"`
 	Model           string           `json:"model,omitempty"`
 	Location        string           `json:"location,omitempty"`
+	Price           *float64         `json:"price,omitempty"`
 	PurchaseDate    *time.Time       `json:"purchase_date,omitempty"`
 	WarrantyEndDate *time.Time       `json:"warranty_end_date,omitempty"`
 	PurchaseDetails *PurchaseDetails `json:"purchase_details,omitempty"`
@@ -37,6 +38,7 @@ type CreateProductRequest struct {
 	Brand           string           `json:"brand,omitempty"`
 	Model           string           `json:"model,omitempty"`
 	Location        string           `json:"location,omitempty"`
+	Price           *float64         `json:"price,omitempty"`
 	PurchaseDate    *time.Time       `json:"purchase_date,omitempty"`
 	WarrantyEndDate *time.Time       `json:"warranty_end_date,omitempty"`
 	PurchaseDetails *PurchaseDetails `json:"purchase_details,omitempty"`

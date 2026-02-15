@@ -116,7 +116,7 @@ func TestUploadBill(t *testing.T) {
 		file := strings.NewReader(fileContent)
 		filename := "test.pdf"
 		fileType := "application/pdf"
-		req := CreateBillRequest{UserID: 1, Name: "Bill 1"}
+		req := CreateBillRequest{UserID: 1, ProductID: 100}
 
 		// Expect User Fetch
 		mockUserRepo.On("GetByID", mock.Anything, 1).Return(&users.User{ID: 1, UUID: "test-uuid"}, nil)
@@ -127,7 +127,7 @@ func TestUploadBill(t *testing.T) {
 
 		// Expect DB creation
 		mockRepo.On("Create", mock.Anything, mock.MatchedBy(func(b *Bill) bool {
-			return b.FileURL == "http://storage/test-uuid/bills/test.pdf" && b.Name == "Bill 1"
+			return b.FileURL == "http://storage/test-uuid/bills/test.pdf" && b.ProductID == 100
 		})).Return(nil)
 
 		bill, err := service.UploadBill(context.Background(), file, filename, fileType, req)

@@ -46,14 +46,12 @@ func (s *service) UploadBill(ctx context.Context, file io.Reader, filename, file
 
 	// 2. Create DB Record
 	bill := &Bill{
-		UserID:     req.UserID,
-		CategoryID: req.CategoryID,
-		Name:       req.Name,
-		FileURL:    url,
-		FileType:   fileType,
-		Amount:     req.Amount,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+		UserID:    req.UserID,
+		ProductID: req.ProductID,
+		FileURL:   url,
+		FileType:  fileType,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	if err := s.repo.Create(ctx, bill); err != nil {

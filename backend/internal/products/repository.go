@@ -23,15 +23,15 @@ func (r *MySQLRepository) Create(ctx context.Context, product *Product) error {
 	defer tx.Rollback()
 
 	query := `
-		INSERT INTO keepsy_products (user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO keepsy_products (user_id, category_id, name, brand, model, location, price, purchase_date, warranty_end_date, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 	product.CreatedAt = time.Now()
 	product.UpdatedAt = time.Now()
 
 	result, err := tx.ExecContext(ctx, query,
 		product.UserID, product.CategoryID, product.Name, product.Brand, product.Model,
-		product.Location, product.PurchaseDate, product.WarrantyEndDate,
+		product.Location, product.Price, product.PurchaseDate, product.WarrantyEndDate,
 		product.CreatedAt, product.UpdatedAt,
 	)
 
@@ -71,13 +71,13 @@ func (r *MySQLRepository) Create(ctx context.Context, product *Product) error {
 
 func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*Product, error) {
 	query := `
-		SELECT id, user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at
+		SELECT id, user_id, category_id, name, brand, model, location, price, purchase_date, warranty_end_date, created_at, updated_at
 		FROM keepsy_products WHERE id = ?
 	`
 	var p Product
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&p.ID, &p.UserID, &p.CategoryID, &p.Name, &p.Brand, &p.Model,
-		&p.Location, &p.PurchaseDate, &p.WarrantyEndDate, &p.CreatedAt, &p.UpdatedAt,
+		&p.Location, &p.Price, &p.PurchaseDate, &p.WarrantyEndDate, &p.CreatedAt, &p.UpdatedAt,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -107,7 +107,7 @@ func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*Product, error)
 
 func (r *MySQLRepository) ListByUserID(ctx context.Context, userID int) ([]*Product, error) {
 	query := `
-		SELECT id, user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at
+		SELECT id, user_id, category_id, name, brand, model, location, price, purchase_date, warranty_end_date, created_at, updated_at
 		FROM keepsy_products WHERE user_id = ? ORDER BY created_at DESC
 	`
 	rows, err := r.db.QueryContext(ctx, query, userID)
@@ -121,7 +121,7 @@ func (r *MySQLRepository) ListByUserID(ctx context.Context, userID int) ([]*Prod
 		var p Product
 		if err := rows.Scan(
 			&p.ID, &p.UserID, &p.CategoryID, &p.Name, &p.Brand, &p.Model,
-			&p.Location, &p.PurchaseDate, &p.WarrantyEndDate, &p.CreatedAt, &p.UpdatedAt,
+			&p.Location, &p.Price, &p.PurchaseDate, &p.WarrantyEndDate, &p.CreatedAt, &p.UpdatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan product: %w", err)
 		}

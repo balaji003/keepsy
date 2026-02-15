@@ -21,11 +21,11 @@ func NewMySQLRepository(db *sql.DB) Repository {
 }
 
 func (r *mysqlRepository) Create(ctx context.Context, bill *Bill) error {
-	query := `INSERT INTO keepsy_bills (user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO keepsy_bills (product_id, file_url, file_type, created_at, updated_at) 
+              VALUES (?, ?, ?, ?, ?)`
 
 	res, err := r.db.ExecContext(ctx, query,
-		bill.UserID, bill.CategoryID, bill.Name, bill.FileURL, bill.FileType, bill.Amount, bill.DueDate, bill.CreatedAt, bill.UpdatedAt)
+		bill.ProductID, bill.FileURL, bill.FileType, bill.CreatedAt, bill.UpdatedAt)
 	if err != nil {
 		return fmt.Errorf("failed to insert bill: %w", err)
 	}
@@ -40,8 +40,11 @@ func (r *mysqlRepository) Create(ctx context.Context, bill *Bill) error {
 }
 
 func (r *mysqlRepository) ListByUserID(ctx context.Context, userID int) ([]*Bill, error) {
-	query := `SELECT id, user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at 
-              FROM keepsy_bills WHERE user_id = ? ORDER BY created_at DESC`
+	query := `SELECT b.id, p.user_id, b.product_id, b.file_url, b.file_type, b.created_at, b.updated_at 
+              FROM keepsy_bills b
+              JOIN keepsy_products p ON b.product_id = p.id
+              WHERE p.user_id = ? 
+              ORDER BY b.created_at DESC`
 
 	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {
@@ -52,22 +55,9 @@ func (r *mysqlRepository) ListByUserID(ctx context.Context, userID int) ([]*Bill
 	var bills []*Bill
 	for rows.Next() {
 		b := &Bill{}
-		var dueDate sql.NullString   // Handle nullable date
-		var categoryID sql.NullInt64 // Handle nullable category
-
-		if err := rows.Scan(&b.ID, &b.UserID, &categoryID, &b.Name, &b.FileURL, &b.FileType, &b.Amount, &dueDate, &b.CreatedAt, &b.UpdatedAt); err != nil {
+		if err := rows.Scan(&b.ID, &b.UserID, &b.ProductID, &b.FileURL, &b.FileType, &b.CreatedAt, &b.UpdatedAt); err != nil {
 			return nil, err
 		}
-
-		if categoryID.Valid {
-			catID := int(categoryID.Int64)
-			b.CategoryID = &catID
-		}
-		if dueDate.Valid {
-			dd := dueDate.String
-			b.DueDate = &dd
-		}
-
 		bills = append(bills, b)
 	}
 
@@ -75,28 +65,19 @@ func (r *mysqlRepository) ListByUserID(ctx context.Context, userID int) ([]*Bill
 }
 
 func (r *mysqlRepository) GetByID(ctx context.Context, id int) (*Bill, error) {
-	query := `SELECT id, user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at 
-              FROM keepsy_bills WHERE id = ?`
+	query := `SELECT b.id, p.user_id, b.product_id, b.file_url, b.file_type, b.created_at, b.updated_at 
+              FROM keepsy_bills b
+              JOIN keepsy_products p ON b.product_id = p.id
+              WHERE b.id = ?`
 
 	row := r.db.QueryRowContext(ctx, query, id)
 	b := &Bill{}
-	var dueDate sql.NullString
-	var categoryID sql.NullInt64
 
-	if err := row.Scan(&b.ID, &b.UserID, &categoryID, &b.Name, &b.FileURL, &b.FileType, &b.Amount, &dueDate, &b.CreatedAt, &b.UpdatedAt); err != nil {
+	if err := row.Scan(&b.ID, &b.UserID, &b.ProductID, &b.FileURL, &b.FileType, &b.CreatedAt, &b.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("bill not found")
 		}
 		return nil, err
-	}
-
-	if categoryID.Valid {
-		catID := int(categoryID.Int64)
-		b.CategoryID = &catID
-	}
-	if dueDate.Valid {
-		dd := dueDate.String
-		b.DueDate = &dd
 	}
 
 	return b, nil

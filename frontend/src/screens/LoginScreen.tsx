@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, SafeAreaView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 export default function LoginScreen({ navigation }: any) {
     const [email, setEmail] = useState('');
@@ -24,42 +26,33 @@ export default function LoginScreen({ navigation }: any) {
                     <Text className="text-gray-400 text-base">Sign in to your account</Text>
                 </View>
 
-                <View className="space-y-4">
-                    <View>
-                        <Text className="text-gray-400 font-medium mb-1 ml-1">Email</Text>
-                        <TextInput
-                            className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                            placeholder="you@example.com"
-                            placeholderTextColor="#6b7280"
-                            value={email}
-                            onChangeText={setEmail}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                        />
-                    </View>
+                <View className="space-y-6">
+                    <Input
+                        label="Email"
+                        placeholder="you@example.com"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                    />
 
-                    <View>
-                        <Text className="text-gray-400 font-medium mb-1 ml-1">Password</Text>
-                        <TextInput
-                            className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                            placeholder="••••••••"
-                            placeholderTextColor="#6b7280"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry
-                        />
-                    </View>
+                    <Input
+                        label="Password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                    />
 
                     <TouchableOpacity className="items-end">
                         <Text className="text-primary font-medium">Forgot Password?</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity
-                        className="w-full bg-primary rounded-lg py-3 items-center shadow-lg shadow-primary/20 active:bg-secondary"
+                    <Button
+                        title="Sign In"
                         onPress={handleLogin}
-                    >
-                        <Text className="text-white font-bold text-lg">Sign In</Text>
-                    </TouchableOpacity>
+                        variant="primary"
+                    />
                 </View>
 
                 <View className="flex-row justify-center mt-8">

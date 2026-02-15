@@ -10,6 +10,8 @@ const mockProducts = [
     { id: 4, name: 'LG Monitor', brand: 'LG', purchaseDate: '2023-05-01', price: '$400', warrantyEnd: '2026-05-01' },
 ];
 
+import Card from '../components/Card';
+
 export default function ProductListScreen({ navigation }: any) {
     return (
         <SafeAreaView className="flex-1 bg-background">
@@ -20,7 +22,7 @@ export default function ProductListScreen({ navigation }: any) {
                         <Text className="text-white text-lg">Back</Text>
                     </TouchableOpacity>
                     <Text className="text-white text-xl font-bold">My Products</Text>
-                    <TouchableOpacity onPress={() => console.log('Add')} className="p-2">
+                    <TouchableOpacity onPress={() => navigation.navigate('AddProduct')} className="p-2">
                         <Text className="text-primary text-lg">Add</Text>
                     </TouchableOpacity>
                 </View>
@@ -31,19 +33,21 @@ export default function ProductListScreen({ navigation }: any) {
                     contentContainerStyle={{ paddingBottom: 20 }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity className="bg-surface p-4 rounded-xl border border-gray-800 mb-3">
-                            <View className="flex-row justify-between items-start mb-2">
-                                <View>
-                                    <Text className="text-white font-bold text-lg">{item.name}</Text>
-                                    <Text className="text-subtext text-sm">{item.brand}</Text>
+                        <TouchableOpacity onPress={() => console.log('Product Details', item.id)}>
+                            <Card className="mb-3">
+                                <View className="flex-row justify-between items-start mb-2">
+                                    <View>
+                                        <Text className="text-white font-bold text-lg">{item.name}</Text>
+                                        <Text className="text-subtext text-sm">{item.brand}</Text>
+                                    </View>
+                                    <Text className="text-primary font-bold text-lg">{item.price}</Text>
                                 </View>
-                                <Text className="text-primary font-bold text-lg">{item.price}</Text>
-                            </View>
-                            <View className="h-[1px] bg-gray-800 my-2" />
-                            <View className="flex-row justify-between">
-                                <Text className="text-subtext text-xs">Bought: {item.purchaseDate}</Text>
-                                <Text className="text-subtext text-xs text-secondary">Warranty: {item.warrantyEnd}</Text>
-                            </View>
+                                <View className="h-[1px] bg-gray-800 my-2" />
+                                <View className="flex-row justify-between">
+                                    <Text className="text-subtext text-xs">Bought: {item.purchaseDate}</Text>
+                                    <Text className="text-subtext text-xs text-secondary">Warranty: {item.warrantyEnd}</Text>
+                                </View>
+                            </Card>
                         </TouchableOpacity>
                     )}
                 />

@@ -9,6 +9,8 @@ const mockBills = [
     { id: 3, name: 'Uber Ride', date: '2024-02-14', type: 'PDF' },
 ];
 
+import Card from '../components/Card';
+
 export default function BillListScreen({ navigation }: any) {
     return (
         <SafeAreaView className="flex-1 bg-background">
@@ -19,7 +21,7 @@ export default function BillListScreen({ navigation }: any) {
                         <Text className="text-white text-lg">Back</Text>
                     </TouchableOpacity>
                     <Text className="text-white text-xl font-bold">My Bills</Text>
-                    <TouchableOpacity onPress={() => console.log('Add')} className="p-2">
+                    <TouchableOpacity onPress={() => navigation.navigate('AddProduct')} className="p-2">
                         <Text className="text-primary text-lg">Add</Text>
                     </TouchableOpacity>
                 </View>
@@ -30,17 +32,19 @@ export default function BillListScreen({ navigation }: any) {
                     contentContainerStyle={{ paddingBottom: 20 }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity className="bg-surface p-4 rounded-xl border border-gray-800 mb-3 flex-row items-center justify-between">
-                            <View className="flex-row items-center space-x-4">
-                                <View className="w-10 h-10 bg-gray-800 rounded-lg items-center justify-center">
-                                    <Text className="text-gray-400 font-bold">{item.type}</Text>
+                        <TouchableOpacity>
+                            <Card className="mb-3 flex-row items-center justify-between p-4">
+                                <View className="flex-row items-center space-x-4">
+                                    <View className="w-10 h-10 bg-gray-800 rounded-lg items-center justify-center">
+                                        <Text className="text-gray-400 font-bold">{item.type}</Text>
+                                    </View>
+                                    <View>
+                                        <Text className="text-white font-bold text-base">{item.name}</Text>
+                                        <Text className="text-subtext text-xs">{item.date}</Text>
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text className="text-white font-bold text-base">{item.name}</Text>
-                                    <Text className="text-subtext text-xs">{item.date}</Text>
-                                </View>
-                            </View>
-                            <Text className="text-primary text-sm">View</Text>
+                                <Text className="text-primary text-sm">View</Text>
+                            </Card>
                         </TouchableOpacity>
                     )}
                 />

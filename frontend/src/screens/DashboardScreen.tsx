@@ -15,6 +15,8 @@ const recentProducts = [
     { id: 3, name: 'Keychron Q1', brand: 'Keychron', purchaseDate: '2024-02-10', price: '$180' },
 ];
 
+import Card from '../components/Card';
+
 export default function DashboardScreen({ navigation }: any) {
     return (
         <SafeAreaView className="flex-1 bg-background">
@@ -40,24 +42,30 @@ export default function DashboardScreen({ navigation }: any) {
                     {/* Stats Cards */}
                     <View className="flex-row justify-between mb-8">
                         <TouchableOpacity
-                            className="bg-surface p-4 rounded-xl border border-gray-800 w-[31%] items-center"
+                            className="w-[31%]"
                             onPress={() => navigation.navigate('ProductList')}
                         >
-                            <Text className="text-white text-xl font-bold mb-1">12</Text>
-                            <Text className="text-subtext text-xs text-center">Total Products</Text>
+                            <Card className="items-center p-4">
+                                <Text className="text-white text-xl font-bold mb-1">12</Text>
+                                <Text className="text-subtext text-xs text-center">Products</Text>
+                            </Card>
                         </TouchableOpacity>
 
-                        <View className="bg-surface p-4 rounded-xl border border-gray-800 w-[31%] items-center">
-                            <Text className="text-white text-xl font-bold mb-1">$4,250</Text>
-                            <Text className="text-subtext text-xs text-center">Total Value</Text>
+                        <View className="w-[31%]">
+                            <Card className="items-center p-4">
+                                <Text className="text-white text-xl font-bold mb-1">$4.2k</Text>
+                                <Text className="text-subtext text-xs text-center">Value</Text>
+                            </Card>
                         </View>
 
                         <TouchableOpacity
-                            className="bg-surface p-4 rounded-xl border border-gray-800 w-[31%] items-center"
+                            className="w-[31%]"
                             onPress={() => navigation.navigate('ProductList')}
                         >
-                            <Text className="text-white text-xl font-bold mb-1">2</Text>
-                            <Text className="text-subtext text-xs text-center">Expiring Soon</Text>
+                            <Card className="items-center p-4 border-red-900/50 bg-red-900/10">
+                                <Text className="text-red-400 text-xl font-bold mb-1">2</Text>
+                                <Text className="text-red-400/70 text-xs text-center">Expiring</Text>
+                            </Card>
                         </TouchableOpacity>
                     </View>
 

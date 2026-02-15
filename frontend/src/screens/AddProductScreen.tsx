@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Button from '../components/Button';
+import Input from '../components/Input';
+import Card from '../components/Card';
 
 export default function AddProductScreen({ navigation }: any) {
     const [name, setName] = useState('');
@@ -27,50 +30,34 @@ export default function AddProductScreen({ navigation }: any) {
                     </View>
 
                     <View className="space-y-6">
-                        <View>
-                            <Text className="text-gray-400 font-medium mb-2 ml-1">Product Name</Text>
-                            <TextInput
-                                className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                                placeholder="e.g. MacBook Pro"
-                                placeholderTextColor="#6b7280"
-                                value={name}
-                                onChangeText={setName}
-                            />
-                        </View>
+                        <Input
+                            label="Product Name"
+                            placeholder="e.g. MacBook Pro"
+                            value={name}
+                            onChangeText={setName}
+                        />
 
-                        <View>
-                            <Text className="text-gray-400 font-medium mb-2 ml-1">Brand</Text>
-                            <TextInput
-                                className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                                placeholder="e.g. Apple"
-                                placeholderTextColor="#6b7280"
-                                value={brand}
-                                onChangeText={setBrand}
-                            />
-                        </View>
+                        <Input
+                            label="Brand"
+                            placeholder="e.g. Apple"
+                            value={brand}
+                            onChangeText={setBrand}
+                        />
 
-                        <View>
-                            <Text className="text-gray-400 font-medium mb-2 ml-1">Price</Text>
-                            <TextInput
-                                className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                                placeholder="0.00"
-                                placeholderTextColor="#6b7280"
-                                value={price}
-                                onChangeText={setPrice}
-                                keyboardType="numeric"
-                            />
-                        </View>
+                        <Input
+                            label="Price"
+                            placeholder="0.00"
+                            value={price}
+                            onChangeText={setPrice}
+                            keyboardType="numeric"
+                        />
 
-                        <View>
-                            <Text className="text-gray-400 font-medium mb-2 ml-1">Purchase Date</Text>
-                            <TextInput
-                                className="w-full bg-surface border border-gray-800 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-gray-600"
-                                placeholder="YYYY-MM-DD"
-                                placeholderTextColor="#6b7280"
-                                value={date}
-                                onChangeText={setDate}
-                            />
-                        </View>
+                        <Input
+                            label="Purchase Date"
+                            placeholder="YYYY-MM-DD"
+                            value={date}
+                            onChangeText={setDate}
+                        />
 
                         <TouchableOpacity
                             className="mt-4 bg-surface border border-gray-800 border-dashed rounded-xl p-8 items-center justify-center space-y-2"
@@ -80,6 +67,12 @@ export default function AddProductScreen({ navigation }: any) {
                             </View>
                             <Text className="text-gray-400">Upload Receipt / Bill</Text>
                         </TouchableOpacity>
+
+                        <Button
+                            title="Save Product"
+                            onPress={() => console.log('Save')}
+                            className="mt-4"
+                        />
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>

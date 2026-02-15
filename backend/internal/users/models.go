@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	ID        int       `json:"id"`
-	UUID      string    `json:"uuid"`
+	UUID      string    `json:"uuid"` // Unique identifier (v5 UUID specific to Name + Phone)
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
 	Phone     string    `json:"phone,omitempty"`

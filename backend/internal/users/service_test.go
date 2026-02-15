@@ -48,37 +48,6 @@ func (m *MockRepo) GetByPhone(ctx context.Context, phone string) (*User, error) 
 	return args.Get(0).(*User), args.Error(1)
 }
 
-func TestCreateUser(t *testing.T) {
-	t.Run("Success", func(t *testing.T) {
-		mockRepo := new(MockRepo)
-		service := NewService(mockRepo)
-
-		req := CreateUserRequest{
-			Name:  "Test User",
-			Email: "test@example.com",
-			Phone: "1234567890",
-		}
-
-		mockRepo.On("Create", mock.Anything, mock.MatchedBy(func(u *User) bool {
-			return u.Name == req.Name && u.Email == req.Email
-		})).Return(nil)
-
-		user, err := service.CreateUser(context.Background(), req)
-
-		assert.NoError(t, err)
-		assert.NotNil(t, user)
-		assert.Equal(t, 1, user.ID)
-		mockRepo.AssertExpectations(t)
-	})
-
-	t.Run("MissingFields", func(t *testing.T) {
-		service := NewService(nil)
-		_, err := service.CreateUser(context.Background(), CreateUserRequest{})
-		assert.Error(t, err)
-		assert.Equal(t, "name and email are required", err.Error())
-	})
-}
-
 func TestGetUserByID(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockRepo := new(MockRepo)

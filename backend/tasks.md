@@ -46,3 +46,7 @@
 - [x] Update `Login` service to return `ErrUserNotFound` when user is not found.
 - [x] Update `Login` handler to return 404 with specific error code `user_not_found`.
 - [x] Add Unit Test for `UserNotFound` scenario.
+
+## API Cleanup (2026-02-15)
+- [x] Remove redundant `POST /users` endpoint (since `POST /auth/register` covers it).
+- [x] Remove unused `CreateUser` service method and handler.

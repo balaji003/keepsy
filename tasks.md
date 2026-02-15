@@ -23,12 +23,6 @@
 - [x] Write Unit Tests for all Services using `testify/mock`.
 - [x] Verify all tests pass (`go test ./internal/...`).
 
-## Repository Organization & Deployment (2026-02-14)
-- [x] Reorganize project structure into Monorepo (moved backend to `backend/` folder).
-- [x] Initialize Git repository at root.
-- [x] Create root `.gitignore`.
-- [x] Push code to GitHub: `https://github.com/balaji003/keepsy.git`.
-
 ## Document Upload & Bills Service (2026-02-15)
 - [x] Design Implementation Plan for Dynamic Document Upload.
 - [x] Implement `internal/storage` package:

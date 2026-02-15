@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS bills (
+CREATE TABLE IF NOT EXISTS keepsy_bills (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     category_id INT, -- Optional: link to category
@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS bills (
     due_date DATE,         -- Optional: due date
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES keepsy_users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES keepsy_categories(id) ON DELETE SET NULL
 );

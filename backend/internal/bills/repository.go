@@ -21,7 +21,7 @@ func NewMySQLRepository(db *sql.DB) Repository {
 }
 
 func (r *mysqlRepository) Create(ctx context.Context, bill *Bill) error {
-	query := `INSERT INTO bills (user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at) 
+	query := `INSERT INTO keepsy_bills (user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at) 
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	res, err := r.db.ExecContext(ctx, query,
@@ -41,7 +41,7 @@ func (r *mysqlRepository) Create(ctx context.Context, bill *Bill) error {
 
 func (r *mysqlRepository) ListByUserID(ctx context.Context, userID int) ([]*Bill, error) {
 	query := `SELECT id, user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at 
-              FROM bills WHERE user_id = ? ORDER BY created_at DESC`
+              FROM keepsy_bills WHERE user_id = ? ORDER BY created_at DESC`
 
 	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {
@@ -76,7 +76,7 @@ func (r *mysqlRepository) ListByUserID(ctx context.Context, userID int) ([]*Bill
 
 func (r *mysqlRepository) GetByID(ctx context.Context, id int) (*Bill, error) {
 	query := `SELECT id, user_id, category_id, name, file_url, file_type, amount, due_date, created_at, updated_at 
-              FROM bills WHERE id = ?`
+              FROM keepsy_bills WHERE id = ?`
 
 	row := r.db.QueryRowContext(ctx, query, id)
 	b := &Bill{}

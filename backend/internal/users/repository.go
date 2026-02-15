@@ -17,7 +17,7 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 
 func (r *MySQLRepository) Create(ctx context.Context, user *User) error {
 	query := `
-		INSERT INTO users (uuid, name, email, phone, created_at, updated_at)
+		INSERT INTO keepsy_users (uuid, name, email, phone, created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?)
 	`
 	user.CreatedAt = time.Now()
@@ -37,7 +37,7 @@ func (r *MySQLRepository) Create(ctx context.Context, user *User) error {
 }
 
 func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*User, error) {
-	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE id = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM keepsy_users WHERE id = ?`
 	var user User
 	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*User, error) {
 }
 
 func (r *MySQLRepository) GetByEmail(ctx context.Context, email string) (*User, error) {
-	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE email = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM keepsy_users WHERE email = ?`
 	var user User
 	err := r.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
@@ -63,7 +63,7 @@ func (r *MySQLRepository) GetByEmail(ctx context.Context, email string) (*User, 
 }
 
 func (r *MySQLRepository) GetByPhone(ctx context.Context, phone string) (*User, error) {
-	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE phone = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM keepsy_users WHERE phone = ?`
 	var user User
 	err := r.db.QueryRowContext(ctx, query, phone).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
@@ -76,7 +76,7 @@ func (r *MySQLRepository) GetByPhone(ctx context.Context, phone string) (*User, 
 }
 
 func (r *MySQLRepository) GetByUUID(ctx context.Context, uuid string) (*User, error) {
-	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE uuid = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM keepsy_users WHERE uuid = ?`
 	var user User
 	err := r.db.QueryRowContext(ctx, query, uuid).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {

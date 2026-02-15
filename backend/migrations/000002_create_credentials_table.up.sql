@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS user_credentials (
+CREATE TABLE IF NOT EXISTS keepsy_user_credentials (
     user_id INT PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES keepsy_users(id) ON DELETE CASCADE
 );

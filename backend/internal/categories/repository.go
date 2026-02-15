@@ -17,7 +17,7 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 
 func (r *MySQLRepository) Create(ctx context.Context, category *Category) error {
 	query := `
-		INSERT INTO categories (name, slug, parent_id, is_active, created_at)
+		INSERT INTO keepsy_categories (name, slug, parent_id, is_active, created_at)
 		VALUES (?, ?, ?, ?, ?)
 	`
 	category.CreatedAt = time.Now()
@@ -37,7 +37,7 @@ func (r *MySQLRepository) Create(ctx context.Context, category *Category) error 
 }
 
 func (r *MySQLRepository) List(ctx context.Context) ([]*Category, error) {
-	query := `SELECT id, name, slug, parent_id, is_active, created_at FROM categories WHERE is_active = true ORDER BY name ASC`
+	query := `SELECT id, name, slug, parent_id, is_active, created_at FROM keepsy_categories WHERE is_active = true ORDER BY name ASC`
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list categories: %w", err)

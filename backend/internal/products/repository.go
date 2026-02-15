@@ -23,7 +23,7 @@ func (r *MySQLRepository) Create(ctx context.Context, product *Product) error {
 	defer tx.Rollback()
 
 	query := `
-		INSERT INTO products (user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at)
+		INSERT INTO keepsy_products (user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 	product.CreatedAt = time.Now()
@@ -47,7 +47,7 @@ func (r *MySQLRepository) Create(ctx context.Context, product *Product) error {
 
 	if product.PurchaseDetails != nil {
 		detailsQuery := `
-			INSERT INTO product_purchase_details (product_id, shop_name, shop_address, contact_person, contact_number, order_id, delivery_status)
+			INSERT INTO keepsy_product_purchase_details (product_id, shop_name, shop_address, contact_person, contact_number, order_id, delivery_status)
 			VALUES (?, ?, ?, ?, ?, ?, ?)
 		`
 		details := product.PurchaseDetails
@@ -72,7 +72,7 @@ func (r *MySQLRepository) Create(ctx context.Context, product *Product) error {
 func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*Product, error) {
 	query := `
 		SELECT id, user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at
-		FROM products WHERE id = ?
+		FROM keepsy_products WHERE id = ?
 	`
 	var p Product
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
@@ -89,7 +89,7 @@ func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*Product, error)
 	// Fetch purchase details
 	detailsQuery := `
 		SELECT shop_name, shop_address, contact_person, contact_number, order_id, delivery_status
-		FROM product_purchase_details WHERE product_id = ?
+		FROM keepsy_product_purchase_details WHERE product_id = ?
 	`
 	var d PurchaseDetails
 	err = r.db.QueryRowContext(ctx, detailsQuery, p.ID).Scan(
@@ -108,7 +108,7 @@ func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*Product, error)
 func (r *MySQLRepository) ListByUserID(ctx context.Context, userID int) ([]*Product, error) {
 	query := `
 		SELECT id, user_id, category_id, name, brand, model, location, purchase_date, warranty_end_date, created_at, updated_at
-		FROM products WHERE user_id = ? ORDER BY created_at DESC
+		FROM keepsy_products WHERE user_id = ? ORDER BY created_at DESC
 	`
 	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {

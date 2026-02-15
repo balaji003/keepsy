@@ -64,3 +64,4 @@
 - [x] Update `Auth` service to generate UUID v5 (Name + Phone) on registration.
 - [x] Update `Bills` service to store files in `<uuid>/bills/<filename>`.
 - [x] Update tests for `Auth` and `Bills` services.
+- [x] Rename all tables with `keepsy_` prefix.

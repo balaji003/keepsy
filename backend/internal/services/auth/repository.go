@@ -20,7 +20,7 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 }
 
 func (r *MySQLRepository) CreatePassword(ctx context.Context, userID int, hash string) error {
-	query := `INSERT INTO user_credentials (user_id, password_hash) VALUES (?, ?)`
+	query := `INSERT INTO keepsy_user_credentials (user_id, password_hash) VALUES (?, ?)`
 	_, err := r.db.ExecContext(ctx, query, userID, hash)
 	if err != nil {
 		return fmt.Errorf("failed to create password credentials: %w", err)
@@ -29,7 +29,7 @@ func (r *MySQLRepository) CreatePassword(ctx context.Context, userID int, hash s
 }
 
 func (r *MySQLRepository) GetPasswordHash(ctx context.Context, userID int) (string, error) {
-	query := `SELECT password_hash FROM user_credentials WHERE user_id = ?`
+	query := `SELECT password_hash FROM keepsy_user_credentials WHERE user_id = ?`
 	var hash string
 	err := r.db.QueryRowContext(ctx, query, userID).Scan(&hash)
 	if err != nil {

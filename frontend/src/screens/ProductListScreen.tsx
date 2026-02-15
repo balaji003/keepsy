@@ -33,7 +33,7 @@ export default function ProductListScreen({ navigation }: any) {
                     contentContainerStyle={{ paddingBottom: 20 }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => console.log('Product Details', item.id)}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { product: item })}>
                             <Card className="mb-3">
                                 <View className="flex-row justify-between items-start mb-2">
                                     <View>

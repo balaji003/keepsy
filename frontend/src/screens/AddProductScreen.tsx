@@ -5,11 +5,29 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import Card from '../components/Card';
 
+import { Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 export default function AddProductScreen({ navigation }: any) {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
     const [price, setPrice] = useState('');
     const [date, setDate] = useState('');
+    const [image, setImage] = useState<string | null>(null);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-background">
@@ -24,7 +42,7 @@ export default function AddProductScreen({ navigation }: any) {
                             <Text className="text-gray-400 text-lg">Cancel</Text>
                         </TouchableOpacity>
                         <Text className="text-white text-xl font-bold">Add Product</Text>
-                        <TouchableOpacity onPress={() => console.log('Save')} className="p-2">
+                        <TouchableOpacity onPress={() => console.log('Save', { name, brand, price, date, image })} className="p-2">
                             <Text className="text-primary text-lg font-bold">Save</Text>
                         </TouchableOpacity>
                     </View>
@@ -60,12 +78,24 @@ export default function AddProductScreen({ navigation }: any) {
                         />
 
                         <TouchableOpacity
-                            className="mt-4 bg-surface border border-gray-800 border-dashed rounded-xl p-8 items-center justify-center space-y-2"
+                            onPress={pickImage}
+                            className="mt-4 bg-surface border border-gray-800 border-dashed rounded-xl p-8 items-center justify-center space-y-2 overflow-hidden"
                         >
-                            <View className="w-12 h-12 rounded-full bg-gray-800 items-center justify-center">
-                                <Text className="text-primary text-2xl">+</Text>
-                            </View>
-                            <Text className="text-gray-400">Upload Receipt / Bill</Text>
+                            {image ? (
+                                <View className="w-full h-48 items-center justify-center">
+                                    <Image source={{ uri: image }} className="w-full h-full rounded-xl" resizeMode="cover" />
+                                    <View className="absolute bottom-2 right-2 bg-black/50 px-3 py-1 rounded-full">
+                                        <Text className="text-white text-xs">Change</Text>
+                                    </View>
+                                </View>
+                            ) : (
+                                <>
+                                    <View className="w-12 h-12 rounded-full bg-gray-800 items-center justify-center">
+                                        <Text className="text-primary text-2xl">+</Text>
+                                    </View>
+                                    <Text className="text-gray-400">Upload Receipt / Bill</Text>
+                                </>
+                            )}
                         </TouchableOpacity>
 
                         <Button

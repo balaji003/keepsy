@@ -30,7 +30,7 @@ export default function DashboardScreen({ navigation }: any) {
                     </View>
                     <TouchableOpacity
                         className="bg-surface p-2 rounded-full border border-gray-800"
-                        onPress={() => console.log('Profile')}
+                        onPress={() => navigation.navigate('Profile')}
                     >
                         <View className="w-8 h-8 rounded-full bg-primary/20 items-center justify-center">
                             <Text className="text-primary font-bold">B</Text>
@@ -81,7 +81,7 @@ export default function DashboardScreen({ navigation }: any) {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 className="flex-1 bg-surface border border-gray-800 p-4 rounded-xl items-center flex-row justify-center space-x-2"
-                                onPress={() => navigation.navigate('BillList')} // Assuming Scan Bill goes to Bill List for now or a Scan screen
+                                onPress={() => navigation.navigate('BillList')}
                             >
                                 <Text className="text-white font-bold text-base">Scan Bill</Text>
                             </TouchableOpacity>

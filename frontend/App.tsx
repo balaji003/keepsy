@@ -8,6 +8,9 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import ProductListScreen from './src/screens/ProductListScreen';
 import BillListScreen from './src/screens/BillListScreen';
 import AddProductScreen from './src/screens/AddProductScreen';
+import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
+import BillDetailsScreen from './src/screens/BillDetailsScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +28,9 @@ export default function App() {
         <Stack.Screen name="ProductList" component={ProductListScreen} />
         <Stack.Screen name="BillList" component={BillListScreen} />
         <Stack.Screen name="AddProduct" component={AddProductScreen} />
+        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+        <Stack.Screen name="BillDetails" component={BillDetailsScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

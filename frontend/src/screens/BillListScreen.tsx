@@ -32,7 +32,7 @@ export default function BillListScreen({ navigation }: any) {
                     contentContainerStyle={{ paddingBottom: 20 }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('BillDetails', { bill: item })}>
                             <Card className="mb-3 flex-row items-center justify-between p-4">
                                 <View className="flex-row items-center space-x-4">
                                     <View className="w-10 h-10 bg-gray-800 rounded-lg items-center justify-center">

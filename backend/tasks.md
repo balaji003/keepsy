@@ -51,3 +51,9 @@
 - [x] Remove redundant `POST /users` endpoint (since `POST /auth/register` covers it).
 - [x] Remove unused `CreateUser` service method and handler.
 - [x] Remove proper `users` Service and Handler (Option A). `users` package is now just Repository & Models.
+
+## Service Refactoring (2026-02-15)
+- [x] Create `internal/services` directory.
+- [x] Move `internal/auth` to `internal/services/auth`.
+- [x] Move `internal/storage` to `internal/services/storage`.
+- [x] Update imports in `main.go` and `bills/service.go`.

@@ -5,13 +5,13 @@ import (
 	"log"
 	"net/http"
 
-	"keepsy-backend/internal/auth"
 	"keepsy-backend/internal/bills"
 	"keepsy-backend/internal/categories"
 	"keepsy-backend/internal/config"
 	"keepsy-backend/internal/db"
 	"keepsy-backend/internal/products"
-	"keepsy-backend/internal/storage"
+	"keepsy-backend/internal/services/auth"
+	"keepsy-backend/internal/services/storage"
 	"keepsy-backend/internal/users"
 )
 

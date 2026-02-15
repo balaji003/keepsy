@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"keepsy-backend/internal/storage"
+	"keepsy-backend/internal/services/storage"
 	"time"
 )
 

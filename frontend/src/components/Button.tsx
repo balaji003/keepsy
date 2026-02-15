@@ -43,15 +43,16 @@ export default function Button({ title, variant = 'primary', icon, className, ..
     };
 
     return (
-        <AnimatedPressable
-            className={`${baseClasses} ${variants[variant]} ${className}`}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-            style={animatedStyle}
-            {...props}
-        >
-            {icon && <View className="mr-2">{icon}</View>}
-            <Text className={`${textVariants[variant]}`}>{title}</Text>
-        </AnimatedPressable>
+        <Animated.View style={animatedStyle}>
+            <Pressable
+                className={`${baseClasses} ${variants[variant]} ${className}`}
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}
+                {...props}
+            >
+                {icon && <View className="mr-2">{icon}</View>}
+                <Text className={`${textVariants[variant]}`}>{title}</Text>
+            </Pressable>
+        </Animated.View>
     );
 }

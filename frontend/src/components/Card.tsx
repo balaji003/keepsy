@@ -29,12 +29,13 @@ export default function Card({ children, className, variant = 'default', delay =
     };
 
     return (
-        <Animated.View
-            className={`rounded-2xl p-4 ${variants[variant]} ${className}`}
-            style={animatedStyle}
-            {...props}
-        >
-            {children}
+        <Animated.View style={animatedStyle}>
+            <View
+                className={`rounded-2xl p-4 ${variants[variant]} ${className}`}
+                {...props}
+            >
+                {children}
+            </View>
         </Animated.View>
     );
 }

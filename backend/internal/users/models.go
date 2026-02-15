@@ -14,10 +14,6 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type CheckUserRequest struct {
-	Phone string `json:"phone"`
-}
-
 type Repository interface {
 	Create(ctx context.Context, user *User) error
 	GetByID(ctx context.Context, id int) (*User, error)

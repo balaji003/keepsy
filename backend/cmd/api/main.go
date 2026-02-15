@@ -30,8 +30,6 @@ func main() {
 
 	// Initialize repositories and handlers
 	userRepo := users.NewMySQLRepository(database.Conn)
-	userService := users.NewService(userRepo)
-	userHandler := users.NewHandler(userService)
 
 	authRepo := auth.NewMySQLRepository(database.Conn)
 	authService := auth.NewService(authRepo, userRepo)
@@ -72,10 +70,6 @@ func main() {
 	// Auth Routes
 	mux.HandleFunc("POST /auth/register", authHandler.Register)
 	mux.HandleFunc("POST /auth/login", authHandler.Login)
-
-	// User Routes
-	mux.HandleFunc("GET /users", userHandler.GetUser)
-	mux.HandleFunc("POST /users/check", userHandler.CheckUser)
 
 	// Category Routes
 	// mux.HandleFunc("POST /categories", categoryHandler.CreateCategory) // Disabled per requirements

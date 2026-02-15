@@ -50,3 +50,4 @@
 ## API Cleanup (2026-02-15)
 - [x] Remove redundant `POST /users` endpoint (since `POST /auth/register` covers it).
 - [x] Remove unused `CreateUser` service method and handler.
+- [x] Remove proper `users` Service and Handler (Option A). `users` package is now just Repository & Models.

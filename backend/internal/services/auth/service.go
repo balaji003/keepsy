@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"keepsy-backend/internal/users"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -31,8 +32,17 @@ func (s *service) Register(ctx context.Context, req RegisterRequest) (*users.Use
 		return nil, errors.New("password is required")
 	}
 
-	// 1. Create User
+	// 1. Generate UUID v5 (Namespace: Name + Phone)
+	// Using a custom namespace UUID or just URL namespace for now.
+	// Since we want it unique based on Name+Phone, we can concat them.
+	// Note: Phone is optional, but for v5 we need data.
+	// If phone is empty, we just use Name.
+	data := req.Name + req.Phone
+	userUUID := uuid.NewSHA1(uuid.NameSpaceURL, []byte(data)).String()
+
+	// 2. Create User
 	user := &users.User{
+		UUID:  userUUID,
 		Name:  req.Name,
 		Email: req.Email,
 		Phone: req.Phone,

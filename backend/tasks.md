@@ -57,3 +57,10 @@
 - [x] Move `internal/auth` to `internal/services/auth`.
 - [x] Move `internal/storage` to `internal/services/storage`.
 - [x] Update imports in `main.go` and `bills/service.go`.
+
+## User UUID Implementation (2026-02-15)
+- [x] Create migration `000004_add_uuid_to_users.up.sql`.
+- [x] Update `User` model and `Repository` to include `UUID`.
+- [x] Update `Auth` service to generate UUID v5 (Name + Phone) on registration.
+- [x] Update `Bills` service to store files in `<uuid>/bills/<filename>`.
+- [x] Update tests for `Auth` and `Bills` services.

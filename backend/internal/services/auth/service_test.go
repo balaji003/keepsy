@@ -63,6 +63,14 @@ func (m *MockUserRepo) GetByPhone(ctx context.Context, phone string) (*users.Use
 	return args.Get(0).(*users.User), args.Error(1)
 }
 
+func (m *MockUserRepo) GetByUUID(ctx context.Context, uuid string) (*users.User, error) {
+	args := m.Called(ctx, uuid)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*users.User), args.Error(1)
+}
+
 func TestRegister(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockAuthRepo := new(MockAuthRepo)

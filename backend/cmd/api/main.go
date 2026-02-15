@@ -52,7 +52,7 @@ func main() {
 	}
 
 	billsRepo := bills.NewMySQLRepository(database.Conn)
-	billsService := bills.NewService(billsRepo, storageService)
+	billsService := bills.NewService(billsRepo, userRepo, storageService)
 	billsHandler := bills.NewHandler(billsService)
 
 	mux := http.NewServeMux()

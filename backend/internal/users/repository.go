@@ -17,13 +17,13 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 
 func (r *MySQLRepository) Create(ctx context.Context, user *User) error {
 	query := `
-		INSERT INTO users (name, email, phone, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?)
+		INSERT INTO users (uuid, name, email, phone, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?)
 	`
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	result, err := r.db.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.CreatedAt, user.UpdatedAt)
+	result, err := r.db.ExecContext(ctx, query, user.UUID, user.Name, user.Email, user.Phone, user.CreatedAt, user.UpdatedAt)
 	if err != nil {
 		return fmt.Errorf("failed to create user: %w", err)
 	}
@@ -37,9 +37,9 @@ func (r *MySQLRepository) Create(ctx context.Context, user *User) error {
 }
 
 func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*User, error) {
-	query := `SELECT id, name, email, phone, created_at, updated_at FROM users WHERE id = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE id = ?`
 	var user User
-	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
+	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")
@@ -50,9 +50,9 @@ func (r *MySQLRepository) GetByID(ctx context.Context, id int) (*User, error) {
 }
 
 func (r *MySQLRepository) GetByEmail(ctx context.Context, email string) (*User, error) {
-	query := `SELECT id, name, email, phone, created_at, updated_at FROM users WHERE email = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE email = ?`
 	var user User
-	err := r.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
+	err := r.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")
@@ -63,9 +63,22 @@ func (r *MySQLRepository) GetByEmail(ctx context.Context, email string) (*User, 
 }
 
 func (r *MySQLRepository) GetByPhone(ctx context.Context, phone string) (*User, error) {
-	query := `SELECT id, name, email, phone, created_at, updated_at FROM users WHERE phone = ?`
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE phone = ?`
 	var user User
-	err := r.db.QueryRowContext(ctx, query, phone).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
+	err := r.db.QueryRowContext(ctx, query, phone).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user not found")
+		}
+		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+	return &user, nil
+}
+
+func (r *MySQLRepository) GetByUUID(ctx context.Context, uuid string) (*User, error) {
+	query := `SELECT id, uuid, name, email, phone, created_at, updated_at FROM users WHERE uuid = ?`
+	var user User
+	err := r.db.QueryRowContext(ctx, query, uuid).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")

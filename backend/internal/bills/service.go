@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"keepsy-backend/internal/services/storage"
+	"keepsy-backend/internal/users"
 	"time"
 )
 
@@ -16,20 +17,29 @@ type Service interface {
 }
 
 type service struct {
-	repo    Repository
-	storage storage.Service
+	repo     Repository
+	userRepo users.Repository
+	storage  storage.Service
 }
 
-func NewService(repo Repository, storage storage.Service) Service {
+func NewService(repo Repository, userRepo users.Repository, storage storage.Service) Service {
 	return &service{
-		repo:    repo,
-		storage: storage,
+		repo:     repo,
+		userRepo: userRepo,
+		storage:  storage,
 	}
 }
 
 func (s *service) UploadBill(ctx context.Context, file io.Reader, filename, fileType string, req CreateBillRequest) (*Bill, error) {
-	// 1. Upload to Storage
-	url, err := s.storage.Upload(ctx, file, filename)
+	// 0. Get User UUID
+	user, err := s.userRepo.GetByID(ctx, req.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+
+	// 1. Upload to Storage (Path: <uuid>/bills/<filename>)
+	storagePath := fmt.Sprintf("%s/bills/%s", user.UUID, filename)
+	url, err := s.storage.Upload(ctx, file, storagePath)
 	if err != nil {
 		return nil, fmt.Errorf("storage upload failed: %w", err)
 	}
